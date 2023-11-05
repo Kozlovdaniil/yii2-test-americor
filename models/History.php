@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\events\EventsFactory;
 use app\models\traits\ObjectNameTrait;
 use Yii;
 use yii\db\ActiveQuery;
@@ -108,6 +109,7 @@ class History extends ActiveRecord
     }
 
     /**
+     * @deprecated
      * @return array
      */
     public static function getEventTexts()
@@ -131,7 +133,13 @@ class History extends ActiveRecord
         ];
     }
 
+    public function getEventModel()
+    {
+        return EventsFactory::getByHistoryRecord($this);
+    }
+
     /**
+     * @deprecated
      * @param $event
      * @return mixed
      */
@@ -145,7 +153,7 @@ class History extends ActiveRecord
      */
     public function getEventText()
     {
-        return static::getEventTextByEvent($this->event);
+        return $this->getEventModel()->getEventText();
     }
 
 
